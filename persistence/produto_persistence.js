@@ -4,7 +4,7 @@ const { conexao } = require('./conexao')
 async function listar() {
     const cliente = new Client(conexao)
     await cliente.connect();
-    const res = await cliente.query('SELECT * FROM produtos');
+    const res = await cliente.query('SELECT * FROM produtos ORDER BY id');
     await cliente.end();
     return res.rows;
 }

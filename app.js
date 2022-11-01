@@ -3,7 +3,7 @@ const produtoNegocio = require('./negocio/produto_negocio')
 
 
 async function main() {
-    try {
+    /*try {
         const produtoInserido1 = await produtoNegocio.inserir({nome: "produtoX", preco: 20})
         console.log("Produto Inserido", produtoInserido1);
     } catch (err) { 
@@ -15,14 +15,25 @@ async function main() {
         console.log("Produto Inserido", produtoInserido2);
     } catch (err) { 
         console.log(err);
-    }
+    }*/
 
     
-    const listaProdutos = await produtoPersistence.listar();
+    const listaProdutos = await produtoNegocio.listar();
     console.log("Lista de Produtos",listaProdutos);
 
-    const produto3 = await produtoPersistence.buscarPorId(3);
-    console.log("Produto 3", produto3);
+    try{ 
+        const produto3 = await produtoNegocio.buscarPorId(3);
+        console.log("Produto 3", produto3);
+    } catch (err) {
+        console.log("Erro", err);
+    }
+
+    try{ 
+        const produto100 = await produtoNegocio.buscarPorId(100);
+        console.log("Produto 100", produto100);
+    } catch (err) {
+        console.log("Erro", err);
+    }
 
     const produtoProd3 = await produtoPersistence.buscarPorNome('produto3');
     console.log("Produto nome=3", produtoProd3);

@@ -11,6 +11,18 @@ async function inserir(produto) {
     }
 }
 
+async function listar() {
+    return await produtoPersistence.listar();
+}
+
+async function buscarPorId(id) {
+    const produto = await produtoPersistence.buscarPorId(id);
+    if(!produto) {
+        throw { id: 404, mensagem: `Produto ${id} nao encontrado`};
+    }
+    return produto;
+}
+
 module.exports = {
-    inserir
+    inserir, listar, buscarPorId
 }
