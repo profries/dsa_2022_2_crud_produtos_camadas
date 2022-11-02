@@ -1,4 +1,3 @@
-const produtoPersistence = require('./persistence/produto_persistence')
 const produtoNegocio = require('./negocio/produto_negocio')
 
 
@@ -35,15 +34,57 @@ async function main() {
         console.log("Erro", err);
     }
 
-    const produtoProd3 = await produtoPersistence.buscarPorNome('produto3');
-    console.log("Produto nome=3", produtoProd3);
+    try{
+        const produtoProd3 = await produtoNegocio.buscarPorNome('produto3');
+        console.log("Produto nome=3", produtoProd3);
+    } catch(err) {
+        console.log("Erro", err);
+    }
 
-    const produtoAtualizado = await produtoPersistence.atualizar(4, { nome: 'produto4', preco: 25});
-    console.log("Produto atualizado", produtoAtualizado);
+    //Caso de sucesso
+    try{
+        const produtoAtualizado = await produtoNegocio.atualizar(4, { nome: 'produto4', preco: 25});
+        console.log("Produto atualizado", produtoAtualizado);
+    }
+    catch(err){
+        console.log("Erro", err);
+    }
 
-    const produtoDeletado = await produtoPersistence.deletar(6);
-    console.log("Produto deletado", produtoDeletado);
+    //Caso de insucesso: Parametro preco é string
+    try{
+        const produtoAtualizado = await produtoNegocio.atualizar(4, { nome: 'produto4', preco: '35a'});
+        console.log("Produto atualizado", produtoAtualizado);
+    }
+    catch(err){
+        console.log("Erro", err);
+    }
+    
+    //Caso de insucesso: Id inexistente
+    try{
+        const produtoAtualizado = await produtoNegocio.atualizar(100, { nome: 'produto4', preco: 25});
+        console.log("Produto atualizado", produtoAtualizado);
+    }
+    catch(err){
+        console.log("Erro", err);
+    }
 
+    //Caso de sucesso
+    try{
+        //Trazer id válido
+        const produtoDeletado = await produtoNegocio.deletar(16);
+        console.log("Produto deletado", produtoDeletado);
+    } catch(err){
+        console.log("Erro", err);
+    }
+    
+    //Caso de insucesso: Id inexistente
+    try{
+        //Trazer id inválido
+        const produtoDeletado = await produtoNegocio.deletar(100);
+        console.log("Produto deletado", produtoDeletado);
+    } catch(err){
+        console.log("Erro", err);
+    }
  
 }
 
