@@ -4,9 +4,26 @@ const { conexao } = require('./conexao')
 async function listar() {
     const cliente = new Client(conexao)
     await cliente.connect();
-    const res = await cliente.query('SELECT * FROM produtos ORDER BY id');
+    const sql = `SELECT produtos.id, produtos.nome, produtos.preco, 
+                categorias.id as categoria_id, categorias.nome as categoria_nome
+                FROM produtos
+                INNER JOIN categorias 
+                ON produtos.idcategoria=categorias.id 
+                `;
+    const res = await cliente.query(sql);
+    let listaProdutos = res.rows.map(function(data) {
+        return {
+            id: data.id,
+            nome: data.nome,
+            preco: data.preco,
+            categoria: {
+                id: data.categoria_id,
+                nome: data.categoria_nome
+            }
+        };
+    })
     await cliente.end();
-    return res.rows;
+    return listaProdutos;
 }
 
 async function inserir(produto) {
